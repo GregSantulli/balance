@@ -1,0 +1,17 @@
+
+
+
+
+<div class="new-group-container">
+
+  <div class="header-title">CREATE A NEW GROUP:</div>
+
+  <%= form_for @group, url: {action: "create"}, html: {class: "form-group"} do |f| %>
+    <%= f.label(:name) %>
+    <%= f.text_field :name, class: "form-control" %>
+    <%= f.label(:address) %>
+    <%= f.text_field :address, class: "form-control"  %>
+    <%= f.submit "Create Group", class: "btn btn-primary"  %>
+  <% end %>
+
+</div>

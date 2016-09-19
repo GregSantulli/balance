@@ -7,9 +7,8 @@ Rails.application.routes.draw do
   root 'users#index'
 
   resources :groups do
-
     resources :expenses
-
+    resources :memberships
   end
 
   # Example of regular route:
