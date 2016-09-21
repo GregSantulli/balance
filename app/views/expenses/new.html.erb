@@ -1,14 +1,1 @@
 
-<div class="new-group-container">
-
-  <div class="header-title">Create a new expense:</div>
-
-  <%= form_for @expense, url: {action: "create"}, html: {class: "form-group"} do |f| %>
-    <%= f.label(:description) %>
-    <%= f.text_field :description, class: "form-control" %>
-    <%= f.label(:amount) %>
-    <%= f.number_field :amount, class: "form-control"  %>
-    <%= f.submit "Create Expense", class: "btn btn-success"  %>
-  <% end %>
-
-</div>

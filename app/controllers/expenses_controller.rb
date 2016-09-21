@@ -1,5 +1,6 @@
 class ExpensesController < ApplicationController
 
+  before_action :authenticate_user!
   before_action :get_group, only: [:new, :create, :destroy, :settle]
   # before_action :confirm_expense_ownership, only: [:destory]
 
