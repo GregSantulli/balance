@@ -1,7 +1,6 @@
 class Group < ActiveRecord::Base
 
   has_many :expenses
-
   has_many :memberships
   has_many :users, through: :memberships
 
@@ -14,16 +13,26 @@ class Group < ActiveRecord::Base
     expense_hash
   end
 
-  def outstanding_expenses_for(user)
-    self.expenses.where(user_id: user.id).sum(:amount)
+  def outstanding_expenses
+    self.expenses.where(settled: [false, nil])
   end
 
-  def total_outstanding_expenses_amount
-    self.expenses.sum(:amount)
+  def settle_outstanding_expenses
+    outstanding_expenses.each do |expense|
+      expense.settle
+    end
+  end
+
+  def outstanding_expenses_for(user)
+    outstanding_expenses.where(user_id: user.id).sum(:amount)
+  end
+
+  def outstanding_expenses_amount
+    outstanding_expenses.sum(:amount)
   end
 
   def even_split_amount
-    total_outstanding_expenses_amount.to_f / self.users.count
+    outstanding_expenses_amount.to_f / self.users.count
   end
 
 end

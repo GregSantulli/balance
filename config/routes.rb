@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   root 'users#index'
 
   resources :groups do
+    get '/settle', to: 'groups#settle'
     resources :expenses
     resources :memberships
   end

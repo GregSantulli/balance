@@ -1,6 +1,6 @@
 class ExpensesController < ApplicationController
 
-  before_action :get_group, only: [:new, :create, :destroy]
+  before_action :get_group, only: [:new, :create, :destroy, :settle]
   # before_action :confirm_expense_ownership, only: [:destory]
 
   def new
@@ -23,9 +23,11 @@ class ExpensesController < ApplicationController
 
   end
 
+
   def destroy
-    p @group
-    redirect_to group_path(@group)
+    expense = Expense.find(params[:id])
+    expense.destroy
+    redirect_to group_path @group
   end
 
   private

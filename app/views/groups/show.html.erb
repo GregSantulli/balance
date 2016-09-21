@@ -2,7 +2,11 @@
 
 <div class="group-container">
 
+
   <div class="group-header">
+    <div class="profile">
+      Signed in as <%= "#{current_user.first_name} #{current_user.last_name}" %>
+    </div>
     <div class="group-title">
       <%= @group.name %>
     </div>
@@ -38,7 +42,7 @@
         <tr class="danger">
           <td><%= name %></td>
           <td class="amount"><%= number_to_currency(amount) %></td>
-          <td><%= link_to "Settle", new_user_session_path %></td>
+          <td><%= link_to "Settle", group_settle_path(@group) %></td>
         </tr>
       <% end %>
 

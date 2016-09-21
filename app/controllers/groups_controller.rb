@@ -1,5 +1,6 @@
 class GroupsController < ApplicationController
 
+
   def new
     @group = Group.new
   end
@@ -16,11 +17,19 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find(params[:id])
-    @expenses = @group.expenses.order(created_at: :desc)
+    @expenses = @group.expenses.where(settled: [false, nil]).order(created_at: :desc)
     @total_outstanding = @expenses.sum(:amount)
     @split = @total_outstanding / @group.users.count
     @expense_hash = @group.user_balance_hash
   end
+
+
+  def settle
+    @group = Group.find(params[:group_id])
+    @group.settle_outstanding_expenses
+    redirect_to group_path @group
+  end
+
 
   private
 
