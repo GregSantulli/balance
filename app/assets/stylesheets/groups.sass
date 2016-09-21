@@ -24,13 +24,15 @@
   padding: 30px
   width: 50%
   margin: auto
-
-  .group-title
-    with: 100%
-    font-size: 1.5em
-  .group-members
-
+  min-width: 700px
+  .group-header
+    margin-left: 5px
+    .group-title
+      with: 100%
+      font-size: 1.5em
+    .group-members
   .expense-table
+    overflow: hidden
     width: 100%
     .amount
       text-align: right
@@ -40,3 +42,14 @@
   .new-group-container
     width: 100%
     padding: 10px
+  .group-container
+    min-width: 10px
+    width: 100%
+    padding: 0px
+  .expense-table
+    td
+      max-width: 100px
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
+

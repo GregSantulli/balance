@@ -2,16 +2,52 @@
 
 <div class="group-container">
 
-  <div class="group-title">
-    <%= @group.name %>
+  <div class="group-header">
+    <div class="group-title">
+      <%= @group.name %>
+    </div>
+    <div class="group-members">
+      Members:
+      <%= @group.users.map{ |user| "#{user.first_name} #{user.last_name}" }.join(", ") %>
+    </div>
+    <div class="new-expense"> <%= link_to 'New Expense', new_group_expense_path(@group) %></div>
   </div>
 
-  <div class="group-members">
-    Members:
-    <%= @group.users.map{ |user| "#{user.first_name} #{user.last_name}" }.join(", ") %>
-  </div>
+  <table class="table">
 
-  <div> <%= link_to 'New Expense', new_group_expense_path(@group) %></div>
+    <thead>
+      <td></td>
+    </thead>
+
+    <tr>
+      <td>TOTAL</td>
+      <td class="amount"><%= number_to_currency(@total_outstanding) %></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>Split</td>
+      <td class="amount"><%= number_to_currency(@split) %></td>
+      <td></td>
+    </tr>
+
+
+    <% @expense_hash.each do |name, amount| %>
+
+      <% if amount > 0  %>
+        <tr class="danger">
+          <td><%= name %></td>
+          <td class="amount"><%= number_to_currency(amount) %></td>
+          <td><%= link_to "Settle", new_user_session_path %></td>
+        </tr>
+      <% end %>
+
+    <% end %>
+
+
+  </table>
+
+
 
   <% if @group.expenses.count > 0 %>
 
@@ -20,15 +56,17 @@
         <th>Expense</th>
         <th class="amount">Amount</th>
         <th>Paid By</th>
+        <th>Date</th>
         <th></th>
       </thead>
 
-      <% @group.expenses.each do |expense| %>
+      <% @expenses.each do |expense| %>
 
       <tr>
         <td><%= expense.description %></td>
         <td class="amount"><%= number_to_currency(expense.amount) %></td>
         <td><%= expense.user.first_name %></td>
+        <td><%= expense.created_at.strftime("%b %-d") %></td>
         <td>
           <% if current_user == expense.user %>
             <%= link_to 'Delete', group_expense_path(@group, expense), method: :delete, data: { confirm: "Delete expense: #{expense.description}?" } %>
@@ -36,15 +74,20 @@
 
         </td>
       </tr>
-
-
-
       <% end %>
+
+
+
+
+
+
 
     </table>
 
 
     <div>
+
+
 
     </div>
 

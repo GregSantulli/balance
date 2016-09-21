@@ -16,6 +16,10 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find(params[:id])
+    @expenses = @group.expenses.order(created_at: :desc)
+    @total_outstanding = @expenses.sum(:amount)
+    @split = @total_outstanding / @group.users.count
+    @expense_hash = @group.user_balance_hash
   end
 
   private
