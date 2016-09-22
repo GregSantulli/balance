@@ -21,15 +21,26 @@
     width: 60%
 
 .group-container
+  form
+    margin-top: 10px
+    margin-bottom: 0px
+    width: 100%
+    display: flex
+    align-items: center
+    justify-content: center
   input
+    margin-right: 5px
     width: 60%
+    display: inline-block
+  .amount-input
+    width: 20%
   label
+    display: inline-block
     margin-top: 5px
   .btn
-    margin-left: auto
-    margin-right: auto
-    margin-top: 25px
-    width: 60%
+    display: inline-block
+    width: 20%
+    margin: 0px
   .profile
     color: grey
     font-size: .7em
@@ -56,11 +67,21 @@
     width: 100%
     padding: 10px
   .group-container
+    form
+      flex-direction: column
     min-width: 10px
     width: 100%
     padding: 0px
     input
+      margin: 5px
       width: 100%
+    input.amount-input
+      width: 100%
+    .btn
+      display: block
+      width: 100%
+      margin: 5px
+
   .expense-table
     td
       max-width: 100px

@@ -16,16 +16,14 @@
       <%= @group.users.map{ |user| "#{user.first_name} #{user.last_name}" }.join(", ") %>
     </div>
 
-    <div class="header-title">Create a new expense:</div>
-
+    <div class="header-title">
+      Create a new expense:
+    </div>
     <%= form_for :expense, url: group_expenses_path(@group), html: {class: "form-group"} do |f| %>
-      <%= f.label(:description) %>
-      <%= f.text_field :description, class: "form-control" %>
-      <%= f.label(:amount) %>
-      <%= f.number_field :amount, class: "form-control"  %>
-      <%= f.submit "Create Expense", class: "btn btn-success"  %>
+      <%= f.text_field :description, class: "form-control", placeholder: "What's it for?", required: true %>
+      <%= f.number_field :amount, class: "form-control amount-input", step: 0.01, placeholder: "$", required: true %>
+      <%= f.submit "Add", class: "btn btn-success"  %>
     <% end %>
-
   </div>
 
   <table class="table">
