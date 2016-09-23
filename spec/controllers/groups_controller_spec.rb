@@ -7,6 +7,7 @@ describe GroupsController do
 
     before(:each) do
       sign_in user
+      group.expenses << Expense.new(user_id: user.id, description: "test_expense", amount: 2.50)
     end
 
     describe "GET show" do
@@ -48,10 +49,41 @@ describe GroupsController do
 
     describe "POST create" do
 
+      let (:valid_group_params) { {group: {name: 'test_group'}} }
+
       it "creates a new group" do
-        expect{post :create, group: {name: 'test_group'}}.to change{Group.count}.by(1)
+        expect{post :create, valid_group_params}.to change{Group.count}.by(1)
+      end
+
+      it "adds the group to the current users groups" do
+        expect{post :create, valid_group_params}.to change{user.groups.count}.by(1)
+      end
+
+      it "assigns @group" do
+        post :create, valid_group_params
+        expect(assigns(:group)).to_not be_nil
+      end
+
+      it "redirects to newly created group path" do
+        post :create, valid_group_params
+        expect(response).to redirect_to(group_path assigns(:group))
       end
 
     end
+
+    describe "GET settle" do
+
+      it "assigns @group" do
+        get :settle, group_id: group.id
+        expect(assigns(:group)).to eq group
+      end
+
+      it "sets all group expenses to settled" do
+        get :settle, group_id: group.id
+        expect(group.expenses.where(settled: true).count).to eq group.expenses.count
+      end
+
+    end
+
 
 end
