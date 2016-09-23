@@ -24,7 +24,6 @@ class GroupsController < ApplicationController
     @expense_hash = @group.user_balance_hash
   end
 
-
   def settle
     @group = Group.find(params[:group_id])
     @group.settle_outstanding_expenses
