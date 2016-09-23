@@ -52,8 +52,18 @@ describe ExpensesController do
 
   describe "DELETE destroy" do
 
-    it "destroys an expense" do
+    it "destroys an expense if current user created it" do
       expect{delete :destroy, {group_id: group.id, id: expense.id}}.to change{Expense.count}.by(-1)
+    end
+
+    it "does not destroy an expense if current user did not create it" do
+      unowned_expense = Expense.create!(user_id: 5000, group_id: group.id, description: "test_expense", amount: 2.50)
+      expect{delete :destroy, {group_id: group.id, id: unowned_expense.id}}.to_not change{Expense.count}
+    end
+
+    it "redirects to the group path" do
+      delete :destroy, {group_id: group.id, id: expense.id}
+      expect(response).to redirect_to(group_path assigns(:group))
     end
 
   end
