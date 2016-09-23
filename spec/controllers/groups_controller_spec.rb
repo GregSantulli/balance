@@ -7,7 +7,7 @@ describe GroupsController do
 
     before(:each) do
       sign_in user
-      group.expenses << Expense.new(user_id: user.id, description: "test_expense", amount: 2.50)
+      group.expenses << Expense.create!(user_id: user.id, description: "test_expense", amount: 2.50)
     end
 
     describe "GET show" do
