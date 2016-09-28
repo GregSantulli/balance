@@ -1,15 +1,14 @@
 require 'spec_helper'
 
 describe ExpensesController do
+  include Devise::Test::ControllerHelpers
 
-  let (:user) { User.create!(email: "my@email.com", password: "password") }
-  let (:group) { group = Group.create! }
-  let (:expense) { Expense.create!(user_id: user.id, group_id: group.id, description: "test_expense", amount: 2.50) }
+  let (:user) { FactoryGirl.create(:user) }
+  let (:group) { user.groups.first }
+  let (:expense) { group.expenses.first }
 
   before(:each) do
     sign_in user
-    group.expenses << expense
-    user.groups << group
   end
 
   describe "POST create" do

@@ -25,7 +25,6 @@ RSpec.configure do |config|
 
   config.infer_spec_type_from_file_location!
 
-  config.include Devise::Test::ControllerHelpers
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -37,9 +36,29 @@ RSpec.configure do |config|
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
 
+  config.include FactoryGirl::Syntax::Methods
+
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+end
+
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    # Choose a test framework:
+    with.test_framework :rspec
+    # with.test_framework :minitest
+    # with.test_framework :minitest_4
+    # with.test_framework :test_unit
+
+    # Choose one or more libraries:
+    # with.library :active_record
+    # with.library :active_model
+    # with.library :action_controller
+    # Or, choose the following (which implies all of the above):
+    with.library :rails
+  end
 end
