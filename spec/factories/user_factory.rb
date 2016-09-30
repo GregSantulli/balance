@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :user do
+  factory :user_with_group_and_expense, class: User do
     first_name 'Greg'
     last_name  'Santulli'
     email 'greg@santulli.com'
@@ -11,9 +11,11 @@ FactoryGirl.define do
     end
   end
 
-  # # This will use the User class (Admin would have been guessed)
-  # factory :admin, class: User do
-  #   first_name "Admin"
-  #   last_name  "User"
-  # end
+  factory :user do
+    first_name 'Peter'
+    last_name  'Cherry'
+    email 'peter@cherry.com'
+    password 'password'
+  end
+
 end

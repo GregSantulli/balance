@@ -4,6 +4,8 @@ class Group < ActiveRecord::Base
   has_many :memberships
   has_many :users, through: :memberships
 
+  validates :name, presence: true
+
   def user_balance_hash
     expense_hash = {}
     even_split = even_split_amount

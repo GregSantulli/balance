@@ -3,7 +3,7 @@ require 'spec_helper'
 describe GroupsController do
   include Devise::Test::ControllerHelpers
 
-  let (:user) { FactoryGirl.create(:user) }
+  let (:user) { FactoryGirl.create(:user_with_group_and_expense) }
   let (:group) { user.groups.first }
 
   before(:each) do

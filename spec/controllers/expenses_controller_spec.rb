@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ExpensesController do
   include Devise::Test::ControllerHelpers
 
-  let (:user) { FactoryGirl.create(:user) }
+  let (:user) { FactoryGirl.create(:user_with_group_and_expense) }
   let (:group) { user.groups.first }
   let (:expense) { group.expenses.first }
 
@@ -19,7 +19,8 @@ describe ExpensesController do
         expense:
         {
           description: 'test_expesne',
-          amount: 2.50
+          amount: 2.50,
+          date: Date.today
         }
       }
     }
@@ -56,7 +57,9 @@ describe ExpensesController do
     end
 
     it "does not destroy an expense if current user did not create it" do
-      unowned_expense = Expense.create!(user_id: 5000, group_id: group.id, description: "test_expense", amount: 2.50)
+      other_user = FactoryGirl.create(:user)
+      group.users << other_user
+      unowned_expense = FactoryGirl.create(:expense, user: other_user, group: group)
       expect{delete :destroy, {group_id: group.id, id: unowned_expense.id}}.to_not change{Expense.count}
     end
 
