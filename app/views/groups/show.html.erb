@@ -13,7 +13,7 @@
     </div>
     <div class="group-members">
       Members:
-      <%= @group.users.map{ |user| "#{user.first_name} #{user.last_name}" }.join(", ") %>
+      <%= @group.users.map{ |user| user.first_name || user.last_name ? "#{user.first_name} #{user.last_name}" : user.email }.join(", ") %>
     </div>
 
     <div class="header-title">
@@ -22,6 +22,7 @@
     <%= form_for :expense, url: group_expenses_path(@group), html: {class: "form-group"} do |f| %>
       <%= f.text_field :description, class: "form-control", placeholder: "What's it for?", required: true %>
       <%= f.number_field :amount, class: "form-control amount-input", step: 0.01, placeholder: "$", required: true %>
+      <%= f.date_field :date, class: "form-control date-input", value: Date.today, required: true %>
       <%= f.submit "Add", class: "btn btn-success"  %>
     <% end %>
   </div>
@@ -62,7 +63,7 @@
 
 
 
-  <% if @group.expenses.count > 0 %>
+  <% if @expenses.count > 0 %>
 
     <table class="expense-table table table-striped">
       <thead>
@@ -79,7 +80,7 @@
         <td><%= expense.description %></td>
         <td class="amount"><%= number_to_currency(expense.amount) %></td>
         <td><%= expense.user.first_name %></td>
-        <td><%= expense.created_at.strftime("%b %-d") %></td>
+        <td><%= expense.date.strftime("%b %-d") %></td>
         <td>
           <% if current_user == expense.user %>
             <%= link_to 'Delete', group_expense_path(@group, expense), method: :delete, data: { confirm: "Delete expense: #{expense.description}?" } %>
@@ -108,7 +109,7 @@
   <% else %>
 
     <div class="no-expenses">
-      This group does not have any outsanding expenses. Add one <%= link_to 'here', new_group_expense_path(@group) %>.
+      This group does not have any outsanding expenses. Add one above. %>.
     </div>
 
   <% end %>

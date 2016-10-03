@@ -10,6 +10,8 @@ class ExpensesController < ApplicationController
   end
 
   def create
+    p "here"
+    p expense_params
     @expense = Expense.new(expense_params)
     @expense.user = current_user
     @expense.group = @group
@@ -46,7 +48,7 @@ class ExpensesController < ApplicationController
   end
 
   def expense_params
-     params.require(:expense).permit(:description, :amount)
+     params.require(:expense).permit(:description, :amount, :date)
   end
 
 end

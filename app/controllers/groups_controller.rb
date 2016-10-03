@@ -18,7 +18,8 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find(params[:id])
-    @expenses = @group.expenses.where(settled: [false, nil]).order(created_at: :desc)
+    @expense = Expense.new(date: Date.today)
+    @expenses = @group.expenses.where(settled: [false, nil]).order(date: :desc)
     @total_outstanding = @expenses.sum(:amount)
     @split = @total_outstanding / @group.users.count
     @expense_hash = @group.user_balance_hash

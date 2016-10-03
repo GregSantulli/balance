@@ -1,7 +1,17 @@
 
 
-<%= current_user.email %>
+<br>
+<br>
 
-<%= link_to "Create Group", new_group_path %>
+<div class="container">
+  <div class="jumbotron">
+    <h2>Welcome to Balance!</h2>
+    <p>Balance allows you to track and evenly split expenses between friends.</p>
+    <p>Get started by creating a group: </p>
+    <p><%= link_to "Create Group", new_group_path, class: 'btn btn-primary' %></p>
+  </div>
 
 <%= link_to "Log Out", destroy_user_session_path, method: :delete %>
+</div>
+
+
