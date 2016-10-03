@@ -32,6 +32,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 group :development do
   gem 'web-console', '~> 2.0'
+  gem "letter_opener"
 end
 
 # Use Capistrano for deployment
@@ -45,6 +46,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug'
   gem "better_errors"
+  gem 'dotenv-rails'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
 

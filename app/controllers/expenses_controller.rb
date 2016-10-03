@@ -10,6 +10,8 @@ class ExpensesController < ApplicationController
   end
 
   def create
+    p "here"
+    p expense_params
     @expense = Expense.new(expense_params)
     @expense.user = current_user
     @expense.group = @group

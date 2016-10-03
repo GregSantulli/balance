@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'users#index'
 
+  match '/users', to: 'users#index', via: :get
+
   resources :groups do
     get '/settle', to: 'groups#settle'
     resources :expenses
