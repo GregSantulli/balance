@@ -3,9 +3,7 @@
 
   <h3>Log in</h3>
 
-  <%= content_tag(:div, flash[:error], :id => "flash_error") if flash[:error] %>
-  <%= content_tag(:div, flash[:notice], :id => "flash_notice") if flash[:notice] %>
-  <%= content_tag(:div, flash[:alert], :id => "flash_alert") if flash[:alert] %>
+  <%= devise_error_messages! %>
 
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-group") do |f| %>
     <div class="field">

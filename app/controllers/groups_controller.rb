@@ -31,6 +31,10 @@ class GroupsController < ApplicationController
     redirect_to group_path @group
   end
 
+  def add_user
+    p params
+  end
+
 
   private
 

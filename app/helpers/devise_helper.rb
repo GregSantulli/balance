@@ -1,23 +1,29 @@
 module DeviseHelper
-  def devise_error_messages!
-    return "" unless devise_error_messages?
 
-    messages = resource.errors.full_messages.map { |msg| content_tag(:div, msg) }.join
-    sentence = I18n.t("errors.messages.not_saved",
-                      :count => resource.errors.count,
-                      :resource => resource.class.model_name.human.downcase)
+
+  def devise_error_messages!
+    flash_alerts = []
+    error_key = 'errors.messages.not_saved'
+
+    if !flash.empty?
+      flash_alerts.push(flash.now[:error]) if flash[:error]
+      flash_alerts.push(flash.now[:alert]) if flash[:alert]
+      flash_alerts.push(flash.now[:notice]) if flash[:notice]
+      error_key = 'devise.failure.invalid'
+    end
+
+    return "" if resource.errors.empty? && flash_alerts.empty?
+    errors = resource.errors.empty? ? flash_alerts : resource.errors.full_messages
+
+    messages = errors.map { |msg| content_tag(:div, msg) }.join
 
     html = <<-HTML
     <div id="error_explanation">
-      #{messages}
+      <div>#{messages}</div>
     </div>
     HTML
 
     html.html_safe
-  end
-
-  def devise_error_messages?
-    !resource.errors.empty?
   end
 
 end

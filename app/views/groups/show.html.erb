@@ -1,119 +1,127 @@
 
-
-<div class="group-container">
-
-
-  <div class="group-header">
-    <div class="profile">
-      Signed in as <%= "#{current_user.first_name} #{current_user.last_name}" %>
-      <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
-    </div>
-    <div class="group-title">
-      <%= @group.name %>
-    </div>
-    <div class="group-members">
-      Members:
-      <%= @group.users.map{ |user| user.first_name || user.last_name ? "#{user.first_name} #{user.last_name}" : user.email }.join(", ") %>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">The One Night Standard</a>
     </div>
 
-    <div class="header-title">
-      Create a new expense:
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.email %><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Payments</a></li>
+            <li><a href="#">Help</a></li>
+            <li role="separator" class="divider"></li>
+            <li><%= link_to('Sign out', destroy_user_session_path, method: 'delete') %></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+<div class="containter">
+
+  <div class="row">
+    <div class="col-sm-3 col-md-2 left-panel">
+
+      <div class="filters">
+        <h4>Categories</h4>
+        <div class="form-group">
+          <% 10.times do  %>
+          <div>
+            <input type="checkbox"> <%= Faker::Commerce.department(1) %></label>
+          </div>
+          <% end %>
+        </div>
+      </div>
+
+
+
+
+
+
+
     </div>
-    <%= form_for :expense, url: group_expenses_path(@group), html: {class: "form-group"} do |f| %>
-      <%= f.text_field :description, class: "form-control", placeholder: "What's it for?", required: true %>
-      <%= f.number_field :amount, class: "form-control amount-input", step: 0.01, placeholder: "$", required: true %>
-      <%= f.date_field :date, class: "form-control date-input", value: Date.today, required: true %>
-      <%= f.submit "Add", class: "btn btn-success"  %>
-    <% end %>
-  </div>
 
-  <table class="table">
+    <div class="col-sm-5 col-md-7 center-panel">
 
-    <thead>
-      <td></td>
-    </thead>
+        <div class="row search-bar">
 
-    <tr>
-      <td>TOTAL</td>
-      <td class="amount"><%= number_to_currency(@total_outstanding) %></td>
-      <td></td>
-    </tr>
+          <div class="col-lg-8 col-lg-offset-2">
+              <div class="form-group">
+                <input type="text" class="form-control" id="search-input" placeholder="Search Items" >
+              </div>
+          </div>
 
-    <tr>
-      <td>Split</td>
-      <td class="amount"><%= number_to_currency(@split) %></td>
-      <td></td>
-    </tr>
+        </div>
 
+        <div class="row">
+          <% 23.times do  %>
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 item-container">
+              <div class="item">
 
-    <% @expense_hash.each do |name, amount| %>
+                <div class="image-thumbnail">
+                  <img src="<%= Faker::Avatar.image(nil, '100x100') %>" alt="">
+                </div>
 
-      <% if amount > 0  %>
-        <tr class="danger">
-          <td><%= name %></td>
-          <td class="amount"><%= number_to_currency(amount) %></td>
-          <td><%= link_to "Settle", group_settle_path(@group) %></td>
-        </tr>
-      <% end %>
+                <div class="item-name">
+                  <%= Faker::Commerce.product_name %>
+                </div>
 
-    <% end %>
+                <div class="item-price">
+                  <%= number_to_currency(Faker::Commerce.price,  precision: 2) %>
+                </div>
 
+                <div class="add-item-button">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </div>
 
-  </table>
+              </div>
+            </div>
+          <% end %>
+        </div>
 
+    </div>
 
+    <div class="col-sm-4 col-md-3 right-panel">
+        <div class="row">
+          <div class="col-lg-12 cart-header">
+            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+            <h4>4 items in your cart</h4>
 
-  <% if @expenses.count > 0 %>
+          </div>
 
-    <table class="expense-table table table-striped">
-      <thead>
-        <th>Expense</th>
-        <th class="amount">Amount</th>
-        <th>Paid By</th>
-        <th>Date</th>
-        <th></th>
-      </thead>
+          <% 4.times do %>
+            <div class="col-lg-12 cart-item">
+              <div>
+                <%= Faker::Commerce.product_name %>
+              </div>
 
-      <% @expenses.each do |expense| %>
-
-      <tr>
-        <td><%= expense.description %></td>
-        <td class="amount"><%= number_to_currency(expense.amount) %></td>
-        <td><%= expense.user.first_name %></td>
-        <td><%= expense.date.strftime("%b %-d") %></td>
-        <td>
-          <% if current_user == expense.user %>
-            <%= link_to 'Delete', group_expense_path(@group, expense), method: :delete, data: { confirm: "Delete expense: #{expense.description}?" } %>
+              <div class="cart-item-specs">
+                <span class="quantity">qty: 1 </span>
+                <span class="cart-price"><%= number_to_currency(Faker::Commerce.price,  precision: 2) %></span>
+              </div>
+            </div>
           <% end %>
 
-        </td>
-      </tr>
-      <% end %>
+          <div class="btn btn-danger checkout-button">
+            CHECKOUT <%= number_to_currency(Faker::Commerce.price,  precision: 2) %>
+          </div>
 
-
-
-
-
-
-
-    </table>
-
-
-    <div>
-
-
+        </div>
 
     </div>
-
-
-  <% else %>
-
-    <div class="no-expenses">
-      This group does not have any outsanding expenses. Add one above. %>.
-    </div>
-
-  <% end %>
-
+  </div>
 </div>
-
-
